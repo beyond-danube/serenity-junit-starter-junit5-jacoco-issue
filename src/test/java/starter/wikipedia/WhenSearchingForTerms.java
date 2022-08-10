@@ -2,17 +2,18 @@ package starter.wikipedia;
 
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.core.steps.UIInteractionSteps;
-import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.SingleBrowser;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.WebDriver;
+import net.thucydides.core.annotations.Steps;
 
+import org.junit.runner.RunWith;
+import org.openqa.selenium.WebDriver;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SerenityJUnit5Extension.class)
-class WhenSearchingForTerms {
+// @ExtendWith(SerenityJUnit5Extension.class)
+@RunWith(SerenityRunner.class)
+public class WhenSearchingForTerms {
 
     /**
      * Define the webdriver instance to be used for these tests
@@ -23,11 +24,13 @@ class WhenSearchingForTerms {
     /**
      * Navigation actions. This is a UIInteraction class so it will be instantiated automatically by Serenity.
      */
+    @Steps
     NavigateActions navigate;
 
     /**
      * Actions related to searches. This is a UIInteraction class so it will be instantiated automatically by Serenity.
      */
+    @Steps
     SearchActions search;
 
     /**
@@ -36,8 +39,9 @@ class WhenSearchingForTerms {
      */
     DisplayedArticle displayedArticle;
 
-    @Test
-    void searchBySingleKeyword() {
+    //@Test
+    @org.junit.Test
+    public void searchBySingleKeyword() {
         navigate.toTheHomePage();
         search.searchBy("Everest");
         Serenity.reportThat("The first heading should be 'Mount Everest'",

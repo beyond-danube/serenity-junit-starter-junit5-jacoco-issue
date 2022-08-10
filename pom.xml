@@ -26,10 +26,18 @@
         </dependency>
         <dependency>
             <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-junit5</artifactId>
+            <artifactId>serenity-junit</artifactId>
             <version>${serenity.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-junit5</artifactId>
+            <version>${serenity.version}</version>
+            <scope>test</scope>
+        </dependency -->
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -49,6 +57,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit5.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.22.0</version>
@@ -58,11 +72,41 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version>
+                <configuration>
+                    <excludes>
+                        <exclude>starter/wikipedia/**/*</exclude>
+                        <exclude>**/**/AnotherUnitTest.class</exclude>
+                        <exclude>starter/HelloWorldApp.class</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
-                    <skip>true</skip>
+                    <includes>
+                       <include>**/unittest/**/*.java</include>
+                    </includes>
+                    <argLine>@{argLine}</argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -70,10 +114,7 @@
                 <version>3.0.0-M5</version>
                 <configuration>
                     <includes>
-                        <include>**/*Test.java</include>
-                        <include>**/Test*.java</include>
-                        <include>**/*TestSuite.java</include>
-                        <include>**/When*.java</include>
+                        <include>**/starter/**/When*.java</include>
                     </includes>
                     <systemPropertyVariables>
                         <webdriver.base.url>${webdriver.base.url}</webdriver.base.url>
